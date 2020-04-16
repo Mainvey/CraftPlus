@@ -2,11 +2,11 @@
 {
   "modid": "craftplus",
   "name": "Craft Plus",
-  "description": "Craft Plus is a mod can customize recipes of crafting table, recipes of Brewing table, recipes of anvil, smeltings of furnace and fuels of furnace by editing craftplus.cfg in the .minecraft/config directory.\nYou can delete craftplus.cfg file to reset all options of the mod.",
+  "description": "更好的工艺是个可以自定义工作台品配方，酿造台配方，铁砧配方，熔炉配方和熔炉燃料的模组",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "https://www.mcbbs.net/thread-957558-1-1.html \n and https://github.com/Mainvey/CraftPlus",
-  "updateUrl": "https://github.com/Mainvey/CraftPlus/releases/tag",
+  "updateJSON": "https://raw.githubusercontent.com/Mainvey/CraftPlus/master/update.json",
   "authorList": ["Mainvey"],
   "credits": "",
   "logoFile": "craftplus.png",

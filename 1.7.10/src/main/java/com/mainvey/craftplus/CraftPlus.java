@@ -6,6 +6,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = CraftPlus.ID)
 public class CraftPlus {
@@ -24,5 +25,10 @@ public class CraftPlus {
     @EventHandler
     public void init(FMLInitializationEvent event) {
         Proxy.init(event);
+    }
+
+    @EventHandler
+    public void serverStart(FMLServerStartingEvent event) {
+        Proxy.serverStart(event);
     }
 }

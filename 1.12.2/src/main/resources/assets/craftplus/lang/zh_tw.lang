@@ -1,6 +1,0 @@
-config.notice=1.只能使用英文小寫來編輯設定檔，不要問我為什麼。\n2.雖然規則運算式在解析時會過濾掉花括弧，但還是建議使用，以提高運算式的可讀性。\n3.只能使用除空格以外的無對應的字元來表示無物品，用#表示後續文字均為注解，在解析時會被全部過濾掉。\n4.當物品需要數量或者中繼資料（Metadata）時，在後面追加並用逗號隔開就行了，格式為{模組ID:物品ID，數量（，中繼資料）}。\n填寫中繼資料時，可以使用短整型的最大值32767來代表所有相同種類卻不同中繼資料的物品。\n5.按F3+H複合鍵來查看物品的詳細資訊。
-config.recipes=1.規則配方的格式：{模組ID:合成的物品ID，{第一行識別字（，第二行識別字，第三行識別字）}，{識別字1，模組ID:放入的物品ID1}（，{識別字2，模組ID:放入的物品ID2}，…）}。\n例如：{{minecraft:gravel，4}，{&*，*&}，{&，{minecraft:sand，1，0}，{*，minecraft:cobblestone}}} #用2個[沙子]和2個[圓石]以&*，*&的格式合成4個[沙石]。\n2.無規則配方的格式：{模組ID:產出的物品ID，模組ID:放入的物品ID1，模組ID:放入的物品ID2（，模組ID:放入的物品ID3，…）}。\n例如：{minecraft:coal_ore，minecraft:coal，minecraft:stone} #用[煤]和[石頭]以無規則的格式合成[煤礦]。
-config.smeltings=1.格式：{模組ID:放入的物品ID，模組ID:產出的物品ID，獲得的經驗}。\n2.例如：{{minecraft:sapling，1，0}，minecraft:deadbush，0.5} #把[橡樹樹苗]煆燒成[枯死的灌木]可獲得0.5經驗。
-config.fuels=1.格式：{模組ID:作為燃料的物品ID，燃燒時間}。\n2.例如：{minecraft:book，200} #[書]可供燃燒10秒。
-config.brewings=1.格式：{模組ID:放入的藥水ID，模組ID:作為資料的物品ID，模組ID:產出的物品ID}。\n2.例如：{{minecraft:potion，1，16}，minecraft:gold_block，minecraft:experience_bottle} #以[金塊]作為資料，把[粗制的藥水]釀造成[經驗瓶]。
-config.forgings=1.格式：{模組ID:產出的物品ID，模組ID:放入的物品ID，模組ID:作為資料的物品ID，需要的經驗}。\n2.例如：{minecraft:stone_sword，minecraft:wooden_sword，{minecraft:cobblestone，2}，1} #以2個圓石作為資料，把[木劍]鍛造成[石劍]需要1經驗。

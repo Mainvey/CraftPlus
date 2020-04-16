@@ -4,8 +4,9 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class ConfigRegister {
+    public final boolean GetNBTCommand;
 
-    public final String[] Recipes;
+    public final String[] Composings;
     public final String[] Fuels;
     public final String[] Smeltings;
     public final String[] Brewings;
@@ -15,134 +16,48 @@ public class ConfigRegister {
         Configuration config = new Configuration(event.getSuggestedConfigurationFile());
         config.load();
 
-        config.addCustomCategoryComment(Configuration.CATEGORY_GENERAL, "1.Use # character as comment sign and all after words are regarded as comment ignored by analyzer.\n2.When there is an object needs parameter of quantity or metadata, it needs in form of {domain:object, quantity(, metadata)}.\n3.Use 32767 to represent all objects that are the same kind but have different metadata. \n4.Press F3 + H key to see more information of objects.");
+        config.addCustomCategoryComment(Configuration.CATEGORY_GENERAL, "1.\u6309F3+H\u7ec4\u5408\u952e\u6765\u67e5\u770b\u7269\u54c1\u7684\u8be6\u7ec6\u4fe1\u606f\n2.\u53ea\u80fd\u4f7f\u7528\u9664\u7a7a\u683c\u4ee5\u5916\u7684\u65e0\u5bf9\u5e94\u7684\u5b57\u7b26\u6765\u8868\u793a\u65e0\u7269\u54c1\uff0c\u7528#\u8868\u793a\u540e\u7eed\u6587\u5b57\u5747\u4e3a\u6ce8\u91ca\uff0c\u5728\u89e3\u6790\u65f6\u4f1a\u88ab\u5168\u90e8\u8fc7\u6ee4\u6389\n3.NBT\u683c\u5f0f\uff1a(1).\u6807\u7b7e\u540d:\u6807\u7b7e\u503c (2).\u6807\u7b7e\u540d:{\u5b50\u6807\u7b7e\u540d1:\u5b50\u6807\u7b7e\u503c1(, \u5b50\u6807\u7b7e\u540d2:\u5b50\u6807\u7b7e\u503c2, ...)} (3).\u6570\u7ec4\u540d:[\u6570\u7ec4\u503c1(, \u6570\u7ec4\u503c2, ...)]\n4.\u4f8b\u5982\uff1aminecraft:diamond_sword@{display:{Name:\u5168\u6751\u7684\u5e0c\u671b, Lore:[\u4f60\u77e5\u9053\u5417, \u8fd9\u662f\u4e2a\u4f8b\u5b50]}, Unbreakable:1} #\u4e00\u628a\u540d\u4e3a\u201c\u5168\u6751\u7684\u5e0c\u671b\u201d\u7684\u94bb\u77f3\u5251\uff0c\u9644\u6709\u7b2c\u4e00\u884c\u4e3a\u201c\u4f60\u77e5\u9053\u5417\u201d\u548c\u7b2c\u4e8c\u884c\u4e3a\u201c\u8fd9\u662f\u4e2a\u4f8b\u5b50\u201d\u7684\u4fe1\u606f\uff0c\u5e76\u4e14\u65e0\u6cd5\u635f\u574f\u3002\n5.\u6ce8\u610f\uff1a\u5b50\u6807\u7b7e\u4e00\u5b9a\u8981\u7528\u5927\u62ec\u53f7\u62ec\u8d77\u6765\uff0c\u6570\u7ec4\u503c\u4e00\u5b9a\u8981\u7528\u4e2d\u62ec\u53f7\u62ec\u8d77\u6765\u5e76\u4e14\u53ea\u80fd\u662f\u540c\u4e00\u6570\u636e\u7c7b\u578b\u3002");
 
-        Recipes = config.get(
+        GetNBTCommand = config.get(
                 Configuration.CATEGORY_GENERAL,
-                "recipes",
-                new String[] {
-                        "#Minecraft:Item.Combat",
-                        "{minecraft:chainmail_helmet, {&&&, &*&}, {&, minecraft:iron_bars}} #Compose [Chain Helmet] with 5x[Iron Bars] in &&&,& & form.",
-                        "{minecraft:chainmail_chestplate, {&*&, &&&, &&&}, {&, minecraft:iron_bars}} #Compose [Chain Chest Plate] with 8x[Iron Bars] in & &,&&&,&&& form.",
-                        "{minecraft:chainmail_leggings, {&&&, &*&, &*&}, {&, minecraft:iron_bars}} #Compose [Chain Leggings] with 7x[Iron Bars] in &&&,& &,& & form.",
-                        "{minecraft:chainmail_boots, {&*&, &*&}, {&, minecraft:iron_bars}} #Compose [Chain Boots] with 4x[Iron Bars] in & &,& & form.",
-                        "#Minecraft:Block.Building",
-                        "{{minecraft:dirt, 4, 2}, {&*, *&}, {&, {minecraft:dirt, 1, 0}}, {*, {minecraft:dye, 1, 15}}} #Compose 4x[Podzol(Dirt_2)] with 2x[Dirt(Dirt_0)] and 2x[Bone Meal(Dye_15)] in &*,*& form.",
-                        "{minecraft:bedrock, {&&&, &*&, &&&}, {&, minecraft:obsidian}, {*, minecraft:stone}} #Compose [Bedrock] with 8x[Obsidian] and [Stone] in &&&,&*&,&&& form.",
-                        "{{minecraft:sand, 4, 1}, {&*, *&}, {&, {minecraft:sand, 1, 0}, {*, {minecraft:dye, 1, 1}}}} #Compose 4x[Red Sand(Sand_1)] with 2x[Sand(Sand_0)] and 2x[Rose Red(Dye_1)] in &*,*& form.",
-                        "{{minecraft:gravel, 4}, {&*, *&}, {&, {minecraft:sand, 1, 0}, {*, minecraft:cobblestone}}} #Compose 4x[Gravel] with 2x[Sand(Sand_0)] and 2x[Cobble Stone] in &*,*& form.",
-                        "{minecraft:sponge, {&*&, *$*, &*&}, {&, {minecraft:wool, 1, 4}, {*, minecraft:string}, {$, minecraft:bucket}}} #Compose [Sponge] with [Yellow Wool(Wool_4)], [String] and [Bucket] in &*&,*$*,&*& form.",
-                        "{minecraft:ice, {&&&, &*&, &&&}, {&, minecraft:snow}, {*, minecraft:water_bucket}} #Compose [Ice] with [Snow] and [Water Bucket] in &&&,&*&,&&& form.",
-                        "{minecraft:pumpkin_seeds, minecraft:wheat_seeds, {minecraft:dye, 1, 15}} #Compose [Pumpkin Seeds] with [Wheat Seeds] and [Bone Meal(Dye_15)] in shapeless form.",
-                        "{minecraft:melon_seeds, minecraft:wheat_seeds, {minecraft:dye, 1, 0}} #Compose [Melon Seeds] with [Wheat Seeds] and [Ink Sac(Dye_0)] in shapeless form.",
-                        "{minecraft:mycelium, {&&&, &*&, &&&}, {&, minecraft:brown_mushroom}, {*, {minecraft:dirt, 1, 2}}} #Compose [Mycelium] with [Podzol] and 8x[Brown Mushroom] in &&&,&*&,&&& form.",
-                        "{minecraft:mycelium, {&&&, &*&, &&&}, {&, minecraft:red_mushroom}, {*, {minecraft:dirt, 1, 2}}} #Compose [Mycelium] with [Podzol] and 8x[Red Mushroom] in &&&,&*&,&&& form.",
-                        "#Minecraft:Block.Building.Ore",
-                        "{minecraft:coal_ore, minecraft:coal, minecraft:stone} #Compose [Coal Ore] with [Coal] and [Stone] in shapeless form.",
-                        "{minecraft:iron_ore, minecraft:iron_ingot, minecraft:stone} #Compose [Iron Ore] with [Iron Ingot] and [Stone] in shapeless form.",
-                        "{minecraft:gold_ore, minecraft:gold_ingot, minecraft:stone} #Compose [Gold Ore] with [Gold Ingot] and [Stone] in shapeless form.",
-                        "{minecraft:diamond_ore, minecraft:diamond, minecraft:stone} #Compose [Diamond Ore] with [Diamond] and [Stone] in shapeless form.",
-                        "{minecraft:emerald_ore, minecraft:emerald, minecraft:stone} #Compose [Emerald Ore] with [Emerald] and [Stone] in shapeless form.",
-                        "{minecraft:lapis_ore, {&*&, *&*, &*&}, {&, {minecraft:dye, 1, 4}}, {*, minecraft:stone}} #Compose [Lapis Lazuli Ore] with 5x[Lapis Lazuli(Dye_4)] and 4x[Stone] in &*&,*&*,&*& form.",
-                        "{minecraft:redstone_ore, {&*&, *&*, &*&}, {&, minecraft:redstone}, {*, minecraft:stone}} #Compose [Red Stone Ore] with 5x[Red Stone] and 4x[Stone] in &*&,*&*,&*& form.",
-                        "{minecraft:quartz_ore, {&*&, *&*, &*&}, {&, minecraft:quartz}, {*, minecraft:stone}} #Compose [Nether Quartz Ore] with 5x[Nether Quartz] and 4x[Stone] in &*&,*&*,&*& form.",
-                        "#Minecraft:Block.Decoration",
-                        "{minecraft:web, {&&&, &&&, &&&}, {&, minecraft:string}} #Compose [Web] with 9x[String] in &&&,&&&,&&& form.",
-                        "{minecraft:waterlily, {&*&, &&&, &&&}, {&, minecraft:vine}} #Compose [Lily Pad] with 8x[Vines] in & &,&&&,&&& form.",
-                        "{minecraft:end_portal_frame, {*$*, &&&}, {*, minecraft:ender_pearl}, {&, minecraft:end_stone}} #Compose [End Portal] with 2x[Ender Pearl] and 3x[End Stone] in * *,&&& form.",
-                        "#Minecraft:Block.Decoration.Sapling",
-                        "{{minecraft:sapling, 1, 1}, {minecraft:sapling, 1, 0}, {minecraft:dye, 1, 3}} #Compose [Spruce Sapling(Sapling_1)] with [Oak Sapling(Sapling_0)] and [Cocoa Beans(Dye_3)] in shapeless form.",
-                        "{{minecraft:sapling, 1, 2}, {minecraft:sapling, 1, 0}, {minecraft:dye, 1, 15}} #Compose [Birch Sapling(Sapling_2)] with [Oak Sapling(Sapling_0)] and [Bone Meal(Dye_15)] in shapeless form.",
-                        "{{minecraft:sapling, 1, 3}, {minecraft:sapling, 1, 0}, {minecraft:dye, 1, 14}} #Compose [Jungle Sapling(Sapling_3)] with [Oak Sapling(Sapling_0)] and [Orange Dye(Dye_14)] in shapeless form.",
-                        "{{minecraft:sapling, 1, 4}, {minecraft:sapling, 1, 0}, {minecraft:dye, 1, 1}} #Compose [Acacia Sapling(Sapling_4)] with [Oak Sapling(Sapling_0)] and [Rose Red(Dye_1)] in shapeless form.",
-                        "{{minecraft:sapling, 1, 5}, {minecraft:sapling, 1, 0}, {minecraft:dye, 1, 0}} #Compose [Dark Oak Sapling(Sapling_5)] with [Oak Sapling(Sapling_0)] and [Ink Sac(Dye_0)] in shapeless form.",
-                        "#Minecraft:Item.Transportation",
-                        "{minecraft:saddle, {&&&, &*&}, {&, minecraft:leather}, {*, minecraft:lead}} #Compose [Saddle] with [Lead] and 5x[Leather] in &&&,&*& form.",
-                        "#Minecraft:Item.Miscellaneous",
-                        "{minecraft:experience_bottle, {&&&, &*&, &&&}, {&, minecraft:gold_ingot}, {*, {minecraft:potion, 1, 0}}} #Compose [Bottle of Enchanting] with [Water Bottle(Potion_0)] and 8x[Gold Ingot] in &&&,&*&,&&& form.",
-                        "#Minecraft:Item.Miscellaneous.HorseArmor",
-                        "{minecraft:iron_horse_armor, {&$$, &*&, &&&}, {&, minecraft:iron_ingot}, {*, minecraft:saddle}} #Compose [Iron Horse Armor] with [Saddle] and 6x[Iron Ingot] in &  ,&*&,&&& form.",
-                        "{minecraft:golden_horse_armor, {&$$, &*&, &&&}, {&, minecraft:gold_ingot}, {*, minecraft:saddle}} #Compose [Gold Horse Armor] with [Saddle] and 6x[Gold Ingot] in &  ,&*&,&&& form.",
-                        "{minecraft:diamond_horse_armor, {&$$, &*&, &&&}, {&, minecraft:diamond}, {*, minecraft:saddle}} #Compose [Diamond Horse Armor] with [Saddle] and 6x[Diamond] in &  ,&*&,&&& form.",
-                        "#Minecraft:Item.Tools",
-                        "{minecraft:name_tag, minecraft:sign, minecraft:lead} #Compose [Name Tag] with [Sign] and [Lead] in shapeless form."
-                },
-                "1.Please customize recipes in shaped form of {domain:output, {1st_row_signs(, 2nd_row_signs, 3rd_row_signs)}, {sign1, domain:input1}(, {sign2, domain:input2}, ...)}\nor in shapeless form of {domain:output, domain:input1, domain:input2, ...}.\n2.For example, {{minecraft:gravel, 4}, {&*, *&}, {minecraft:sand, 1, 0}, {minecraft:cobblestone}} #Composing 4x[Gravel] with 2x[Sand(Sand_0)] and 2x[Cobble Stone] in &*,*& form.\nor {{minecraft:log, 1, 1}, {minecraft:log, 1, 0}, {minecraft:dye, 1, 3}} #Compose [Spruce Wood(Log_1)] with [Oak Wood(Log_0)] and [Cocoa Beans(Dye_3)] in shapeless form."
+                "GetNBTCommand",
+                true,
+                "\u662f\u5426\u542f\u7528\u83b7\u53d6NBT\u547d\u4ee4"
+        ).getBoolean();
+
+        Composings = config.get(
+                Configuration.CATEGORY_GENERAL,
+                "Composings",
+                new String[] {"#\u5de5\u4f5c\u53f0\u914d\u65b9"},
+                "1.\u89c4\u5219\u914d\u65b9\u7684\u683c\u5f0f\uff1a\u6a21\u7ec4ID:\u5408\u6210\u7684\u7269\u54c1ID, \u7b2c\u4e00\u884c\u6807\u8bc6\u7b26(, \u7b2c\u4e8c\u884c\u6807\u8bc6\u7b26, \u7b2c\u4e09\u884c\u6807\u8bc6\u7b26), \u6807\u8bc6\u7b261=\u6a21\u7ec4ID:\u653e\u5165\u7684\u7269\u54c1ID1(, \u6807\u8bc6\u7b262=\u6a21\u7ec4ID:\u653e\u5165\u7684\u7269\u54c1ID2, ...)\n\u6216\u8005\u65e0\u89c4\u5219\u914d\u65b9\u7684\u683c\u5f0f\uff1a\u6a21\u7ec4ID:\u4ea7\u51fa\u7684\u7269\u54c1ID, \u6a21\u7ec4ID:\u653e\u5165\u7684\u7269\u54c1ID1, \u6a21\u7ec4ID:\u653e\u5165\u7684\u7269\u54c1ID2(, \u6a21\u7ec4ID:\u653e\u5165\u7684\u7269\u54c1ID3, ...)\n2.\u4f8b\u5982\uff1aminecraft:end_portal_frame, *$*, &&&, *=minecraft:ender_pearl, &=minecraft:end_stone #\u75282\u4e2a[\u672b\u5f71\u73cd\u73e0]\u548c3\u4e2a[\u672b\u5730\u77f3]\u4ee5* *,&&&\u7684\u683c\u5f0f\u5408\u6210[\u672b\u5730\u4f20\u9001\u95e8\u6846\u67b6]\u3002\n\u6216\u8005minecraft:coal_ore, minecraft:coal, minecraft:stone #\u7528[\u7164]\u548c[\u77f3\u5934]\u4ee5\u65e0\u89c4\u5219\u7684\u683c\u5f0f\u5408\u6210[\u7164\u77ff]\u3002\n3.\u6ce8\u610f\uff1a\u5f53\u7269\u54c1\u9700\u8981\u6570\u91cf\u3001\u5143\u6570\u636e(Metadata)\u6216NBT\u65f6\uff0c\u683c\u5f0f\u4e3a\u6a21\u7ec4ID:\u7269\u54c1ID@{\u6570\u91cf, \u5143\u6570\u636e, NBT}\uff0c\u53ea\u9700\u8981\u6570\u91cf\u6216NBT\u65f6\u53ef\u4ee5\u7701\u7565\u5927\u62ec\u53f7\uff0c\u53ea\u9700\u8981\u5143\u6570\u636e\u65f6\u53ef\u4ee5\u7701\u7565\u6570\u91cf\u4f46\u4e0d\u80fd\u7f3a\u7701\u9017\u53f7\uff0c\u5143\u6570\u636e\u53ef\u4ee5\u586b\u5199\u4e3a32767\u6765\u4ee3\u8868\u6240\u6709\u76f8\u540c\u79cd\u7c7b\u5374\u4e0d\u540c\u5143\u6570\u636e\u7684\u7269\u54c1\u3002"
         ).getStringList();
 
         Fuels = config.get(
                 Configuration.CATEGORY_GENERAL,
-                "fuels",
-                new String[] {
-                        "#Minecraft:Block.Decoration",
-                        "{{minecraft:leaves, 1, 32767}, 100} #[Leaves(Leaves)] can burn for five seconds.",
-                        "{{minecraft:leaves2, 1, 32767}, 100} #[Leaves(Leaves2)] can burn for five seconds.",
-                        "#Minecraft:Item.Miscellaneous",
-                        "{minecraft:book, 200} #[Book] can burn for ten seconds.",
-                        "{minecraft:writable_book, 200} #[Writable Book] can burn for ten seconds.",
-                        "{minecraft:paper, 50} #[Paper] can burn for two fifths of second.",
-                        "{minecraft:map, 50} #[Empty Map] can burn for two fifths of second.",
-                        "{minecraft:filled_map, 50} #[Map] can burn for two fifths of second."
-                },
-                "1.Please customize fuels in form of {domain:object, gametick}\n2.one second equals twenty gameticks.\n3.For example, {minecraft:diamond, 200} #[Diamond] can burn for ten seconds."
+                "Fuels",
+                new String[] {"#\u7194\u7089\u71c3\u6599"},
+                "1.\u683c\u5f0f\uff1a\u6a21\u7ec4ID:\u4f5c\u4e3a\u71c3\u6599\u7684\u7269\u54c1ID, \u71c3\u70e7\u65f6\u95f4\n2.\u4f8b\u5982\uff1aminecraft:book, 200 #[\u4e66]\u53ef\u4f9b\u71c3\u70e710\u79d2\u3002\n3.\u6ce8\u610f\uff1a\u71c3\u70e7\u65f6\u95f4\u7684\u5355\u4f4d\u4e3a\u6e38\u620f\u65f6(Gametick)\uff0c1\u79d2\u7b49\u4e8e20\u6e38\u620f\u65f6"
         ).getStringList();
 
         Smeltings = config.get(
                 Configuration.CATEGORY_GENERAL,
-                "smeltings",
-                new String[] {
-                        "#Minecraft:Block.Decoration",
-                        "{{minecraft:sapling, 1, 32767}, minecraft:deadbush, 0.5} #Smelt [Sapling] to [Dead Bush] and acquire 0.5 experience."
-                },
-                "1.Please customize smeltings in form of {domain:input, domain:output, acquirable_experience}.\n2.For example, {{minecraft:dirt, 1, 1}, {minecraft:dirt, 1, 2}, 0.5} #Smelt [Coarse Dirt(Dirt_1)] to [Podzol(Dirt_2)] acquiring 0.5 experience."
+                "Smeltings",
+                new String[] {"#\u7194\u7089\u914d\u65b9"},
+                "1.\u683c\u5f0f\uff1a\u6a21\u7ec4ID:\u4ea7\u51fa\u7684\u7269\u54c1ID, \u6a21\u7ec4ID:\u653e\u5165\u7684\u7269\u54c1ID, \u83b7\u5f97\u7684\u7ecf\u9a8c\n2.\u4f8b\u5982\uff1aminecraft:deadbush, minecraft:sapling, 0.5 #\u628a[\u6a61\u6811\u6811\u82d7]\u7145\u70e7\u6210[\u67af\u6b7b\u7684\u704c\u6728]\u53ef\u83b7\u5f970.5\u7ecf\u9a8c\u3002"
         ).getStringList();
 
         Brewings = config.get(
                 Configuration.CATEGORY_GENERAL,
-                "brewings",
-                new String[] {
-                        "{minecraft:potion, minecraft:gold_block, minecraft:experience_bottle} #Brew 3x[Awkward Potion] to 3x[Bottle of Enchanting] with [Block of Gold]."
-                },
-                "1.Please customize brewings in form of {domain:input_potion, domain:input_material, domain:output}.\n2.For example, {{minecraft:potion, 1, 16}, minecraft:gold_block, minecraft:experience_bottle} #Brew 3x[Awkward Potion] to 3x[Bottle of Enchanting] with [Block of Gold]."
+                "Brewings",
+                new String[] {"#\u917f\u9020\u53f0\u914d\u65b9"},
+                "1.\u683c\u5f0f\uff1a\u6a21\u7ec4ID:\u4ea7\u51fa\u7684\u7269\u54c1ID, \u6a21\u7ec4ID:\u653e\u5165\u7684\u836f\u6c34ID,\u6a21\u7ec4ID:\u4f5c\u4e3a\u6750\u6599\u7684\u7269\u54c1ID\n2.\u4f8b\u5982\uff1aminecraft:experience_bottle, minecraft:potion@potion:minecraft:awkward, minecraft:gold_block,  #\u4ee5[\u91d1\u5757]\u4f5c\u4e3a\u6750\u6599\uff0c\u628a[\u7c97\u5236\u7684\u836f\u6c34]\u917f\u9020\u6210[\u7ecf\u9a8c\u74f6]\u3002"
         ).getStringList();
 
         Forgings = config.get(
                 Configuration.CATEGORY_GENERAL,
-                "forgings",
-                new String[] {
-                        "#Minecraft:Item.Tool",
-                        "#Minecraft:Item.Tool, Wood->Stone",
-                        "{minecraft:stone_sword, minecraft:wooden_sword, {minecraft:cobblestone, 2}, 1} #Forge [Wooden Sword] to [Stone Sword] with 2x[Cobble Stone] requiring 1 experience.",
-                        "{minecraft:stone_axe, minecraft:wooden_axe, {minecraft:cobblestone, 3}, 1} #Forge [Wooden Axe] to [Stone Axe] with 3x[Cobble Stone] requiring 1 experience.",
-                        "{minecraft:stone_pickaxe, minecraft:wooden_pickaxe, {minecraft:cobblestone, 3}, 1} #Forge [Wooden Pickaxe] to [Stone Pickaxe] with 3x[Cobble Stone] requiring 1 experience.",
-                        "{minecraft:stone_hoe, minecraft:wooden_hoe, {minecraft:cobblestone, 2}, 1} #Forge [Wooden Hoe] to [Stone Hoe] with 2x[Cobble Stone] requiring 1 experience.",
-                        "{minecraft:stone_shovel, minecraft:wooden_shovel, minecraft:cobblestone, 1} #Forge [Wooden Shovel] to [Stone Shovel] with [Cobble Stone] requiring 1 experience.",
-                        "#Minecraft:Item.Tool, Stone->Iron",
-                        "{minecraft:iron_sword, minecraft:stone_sword, {minecraft:iron_ingot, 2}, 1} #Forge [Stone Sword] to [Iron Sword] with 2x[Iron Ingot] requiring 1 experience.",
-                        "{minecraft:iron_axe, minecraft:stone_axe, {minecraft:iron_ingot, 3}, 1} #Forge [Stone Axe] to [Iron Axe] with 3x[Iron Ingot] requiring 1 experience.",
-                        "{minecraft:iron_pickaxe, minecraft:stone_pickaxe, {minecraft:iron_ingot, 3}, 1} #Forge [Stone Pickaxe] to [Iron Pickaxe] with 3x[Iron Ingot] requiring 1 experience.",
-                        "{minecraft:iron_hoe, minecraft:stone_hoe, {minecraft:iron_ingot, 2}, 1} #Forge [Stone Hoe] to [Iron Hoe] with 2x[Iron Ingot] requiring 1 experience.",
-                        "{minecraft:iron_shovel, minecraft:stone_shovel, minecraft:iron_ingot, 1} #Forge [Stone Shovel] to [Iron Shovel] with [Iron Ingot] requiring 1 experience.",
-                        "#Minecraft:Item.Tool, Stone->Gold",
-                        "{minecraft:golden_sword, minecraft:stone_sword, {minecraft:gold_ingot, 2}, 1} #Forge [Stone Sword] to [Gold Sword] with 2x[Gold Ingot] requiring 1 experience.",
-                        "{minecraft:golden_axe, minecraft:stone_axe, {minecraft:gold_ingot, 3}, 1} #Forge [Stone Axe] to [Gold Axe] with 3x[Gold Ingot] requiring 1 experience.",
-                        "{minecraft:golden_pickaxe, minecraft:stone_pickaxe, {minecraft:gold_ingot, 3}, 1} #Forge [Stone Pickaxe] to [Gold Pickaxe] with 3x[Gold Ingot] requiring 1 experience.",
-                        "{minecraft:golden_hoe, minecraft:stone_hoe, {minecraft:gold_ingot, 2}, 1} #Forge [Stone Hoe] to [Gold Hoe] with 2x[Gold Ingot] requiring 1 experience.",
-                        "{minecraft:golden_shovel, minecraft:stone_shovel, minecraft:gold_ingot, 1} #Forge [Stone Shovel] to [Gold Shovel] with [Gold Ingot] requiring 1 experience.",
-                        "#Minecraft:Item.Tool, Iron->Diamond",
-                        "{minecraft:diamond_sword, minecraft:iron_sword, {minecraft:diamond, 2}, 1} #Forge [Iron Sword] to [Diamond Sword] with 2x[Diamond] requiring 1 experience.",
-                        "{minecraft:diamond_axe, minecraft:iron_axe, {minecraft:diamond, 3}, 1} #Forge [Iron Axe] to [Diamond Axe] with 3x[Diamond] requiring 1 experience.",
-                        "{minecraft:diamond_pickaxe, minecraft:iron_pickaxe, {minecraft:diamond, 3}, 1} #Forge [Iron Pickaxe] to [Diamond Pickaxe] with 3x[Diamond] requiring 1 experience.",
-                        "{minecraft:diamond_hoe, minecraft:iron_hoe, {minecraft:diamond, 2}, 1} #Forge [Iron Hoe] to [Diamond Hoe] with 2x[Diamond] requiring 1 experience.",
-                        "{minecraft:diamond_shovel, minecraft:iron_shovel, minecraft:diamond, 1} #Forge [Iron Shovel] to [Diamond Shovel] with [Diamond] requiring 1 experience.",
-                        "#Minecraft:Item.Tool, Gold->Diamond",
-                        "{minecraft:diamond_sword, minecraft:golden_sword, {minecraft:diamond, 2}, 1} #Forge [Gold Sword] to [Diamond Sword] with 2x[Diamond] requiring 1 experience.",
-                        "{minecraft:diamond_axe, minecraft:golden_axe, {minecraft:diamond, 3}, 1} #Forge [Gold Axe] to [Diamond Axe] with 3x[Diamond] requiring 1 experience.",
-                        "{minecraft:diamond_pickaxe, minecraft:golden_pickaxe, {minecraft:diamond, 3}, 1} #Forge [Gold Pickaxe] to [Diamond Pickaxe] with 3x[Diamond] requiring 1 experience.",
-                        "{minecraft:diamond_hoe, minecraft:golden_hoe, {minecraft:diamond, 2}, 1} #Forge [Gold Hoe] to [Diamond Hoe] with 2x[Diamond] requiring 1 experience.",
-                        "{minecraft:diamond_shovel, minecraft:golden_shovel, minecraft:diamond, 1} #Forge [Gold Shovel] to [Diamond Shovel] with [Diamond] requiring 1 experience."
-                },
-                "1.Please customize forgings in form of {domain:output, domain:input_object, domain:input_material, required_experience}.\n2.Required experience must be greater than or equal to 1, otherwise it won't be forged.\n3.For example, {minecraft:stone_sword, minecraft:wooden_sword, {minecraft:cobblestone, 2}, 1} #Forge [Wooden Sword] to [Stone Sword] with 2x[Cobble Stone] requiring 1 experience."
+                "Forgings",
+                new String[] {"#\u94c1\u7827\u914d\u65b9"},
+                "1.\u683c\u5f0f\uff1a\u6a21\u7ec4ID:\u4ea7\u51fa\u7684\u7269\u54c1ID, \u6a21\u7ec4ID:\u653e\u5165\u7684\u7269\u54c1ID, \u6a21\u7ec4ID:\u4f5c\u4e3a\u6750\u6599\u7684\u7269\u54c1ID, \u9700\u8981\u7684\u7ecf\u9a8c\n2.\u4f8b\u5982\uff1aminecraft:stone_sword, minecraft:wooden_sword, minecraft:cobblestone@2, 1 #\u4ee52\u4e2a[\u5706\u77f3]\u4f5c\u4e3a\u6750\u6599\uff0c\u628a[\u6728\u5251]\u953b\u9020\u6210[\u77f3\u5251]\u9700\u89811\u7ecf\u9a8c\u3002\n3.\u6ce8\u610f\uff1a\u9700\u8981\u7684\u7ecf\u9a8c\u5fc5\u987b\u5927\u4e8e\u6216\u7b49\u4e8e1\uff0c\u5426\u5219\u5c06\u65e0\u6cd5\u953b\u9020"
         ).getStringList();
 
         config.save();

@@ -7,6 +7,7 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = CraftPlus.ID)
 public class CraftPlus {
@@ -28,5 +29,10 @@ public class CraftPlus {
     @EventHandler
     public void init(FMLInitializationEvent event) {
         Proxy.init(event);
+    }
+
+    @EventHandler
+    public void serverStart(FMLServerStartingEvent event) {
+        Proxy.serverStart(event);
     }
 }
